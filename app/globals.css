@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-navy-900: 16 42 67;
+    --color-navy-950: 10 25 41;
+    --color-gold-500: 245 158 11;
+    --color-gold-400: 251 191 36;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream-50 text-navy-900 antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif tracking-tight;
+  }
+
+  ::selection {
+    @apply bg-gold-400/30;
+  }
+}
+
+@layer components {
+  .text-gradient {
+    @apply bg-gradient-to-r from-gold-400 to-gold-600 bg-clip-text text-transparent;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24 lg:py-32;
+  }
+
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl;
+  }
+
+  .link-underline {
+    @apply relative after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 after:bg-gold-500 after:transition-all after:duration-300 hover:after:w-full;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-gold-500 text-navy-950 font-semibold rounded-sm transition-all duration-300 hover:bg-gold-400 hover:shadow-lg hover:shadow-gold-500/25 active:scale-[0.98];
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-gold-500 text-gold-500 font-semibold rounded-sm transition-all duration-300 hover:bg-gold-500 hover:text-navy-950;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-6 py-3 text-navy-100 font-semibold transition-all duration-300 hover:text-gold-400;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-sm shadow-lg shadow-navy-900/5 border border-navy-100/10 transition-all duration-300;
+  }
+
+  .card-dark {
+    @apply bg-navy-900 text-white rounded-sm shadow-xl transition-all duration-300;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-navy-900;
+  }
+
+  .section-subtitle {
+    @apply text-lg md:text-xl text-navy-600 max-w-2xl;
+  }
+
+  .gold-divider {
+    @apply w-16 h-1 bg-gradient-to-r from-gold-400 to-gold-600;
+  }
+
+  .overlay-gradient {
+    @apply absolute inset-0 bg-gradient-to-r from-navy-950/95 via-navy-900/90 to-navy-950/80;
+  }
+
+  /* Professional animated underline for navigation */
+  .nav-link {
+    @apply relative text-navy-100/90 font-medium transition-colors duration-300 hover:text-white;
+  }
+
+  .nav-link::after {
+    @apply content-[''] absolute -bottom-1 left-0 w-0 h-0.5 bg-gold-500 transition-all duration-300;
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  .nav-link.active {
+    @apply text-gold-400;
+  }
+
+  .nav-link.active::after {
+    @apply w-full bg-gold-400;
+  }
+}
+
+@layer utilities {
+  .animate-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animate-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animate-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animate-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Custom scrollbar for elegance */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-navy-100;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-navy-400 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-navy-500;
+  }
+}
+
+/* Framer Motion integration styles */
+.motion-safe {
+  @media (prefers-reduced-motion: no-preference) {
+    animation-duration: 0.6s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Professional form styles */
+input:focus,
+textarea:focus,
+select:focus {
+  @apply outline-none ring-2 ring-gold-500/50 border-gold-500;
+}
+
+/* Image overlay for professional photos */
+.image-overlay {
+  @apply relative overflow-hidden;
+}
+
+.image-overlay::after {
+  @apply content-[''] absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-transparent opacity-0 transition-opacity duration-300;
+}
+
+.image-overlay:hover::after {
+  @apply opacity-100;
+}
