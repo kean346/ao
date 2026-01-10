@@ -114,13 +114,13 @@ export function Navbar() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-8">
+            <div className="hidden lg:flex items-center gap-6 xl:gap-8">
               {siteConfig.navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
                   className={clsx(
-                    'nav-link-premium',
+                    'nav-link-premium text-sm lg:text-base',
                     pathname === item.href && 'active'
                   )}
                 >
