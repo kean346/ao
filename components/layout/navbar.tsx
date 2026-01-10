@@ -4,11 +4,10 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Phone, ChevronDown } from 'lucide-react';
+import { Menu, X, Phone, ChevronDown, Scale } from 'lucide-react';
 import { clsx } from 'clsx';
 import { siteConfig } from '@/lib/config';
 import { Container } from '@/components/ui/container';
-import { Button } from '@/components/ui/button';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -17,7 +16,7 @@ export function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -42,47 +41,73 @@ export function Navbar() {
 
   return (
     <>
-      {/* Top Bar */}
-      <div className="hidden lg:block bg-navy-950 text-navy-200 text-sm">
-        <Container>
-          <div className="flex justify-between items-center py-2">
-            <div className="flex items-center gap-6">
-              <span>Established {siteConfig.founded}</span>
-              <span className="text-navy-600">|</span>
-              <span>New York | Washington D.C. | Boston</span>
+      {/* Top Bar - Only visible on desktop */}
+      <div
+        className={clsx(
+          'hidden lg:block transition-all duration-500 overflow-hidden',
+          isScrolled ? 'h-0 opacity-0' : 'h-auto opacity-100'
+        )}
+      >
+        <div className="bg-navy-950 text-navy-200 text-sm border-b border-navy-800">
+          <Container>
+            <div className="flex justify-between items-center py-2.5">
+              <div className="flex items-center gap-6">
+                <span className="flex items-center gap-2">
+                  <Scale className="w-4 h-4 text-gold-500" />
+                  <span>Established {siteConfig.founded}</span>
+                </span>
+                <span className="text-navy-600">|</span>
+                <span>New York | Los Angeles | Chicago</span>
+              </div>
+              <div className="flex items-center gap-6">
+                <a
+                  href={`tel:${siteConfig.phone}`}
+                  className="flex items-center gap-2 hover:text-gold-400 transition-colors font-medium"
+                >
+                  <Phone className="w-4 h-4" />
+                  {siteConfig.phone}
+                </a>
+                <span className="text-gold-500 font-medium">24/7 Free Consultation</span>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <a
-                href={`tel:${siteConfig.phone}`}
-                className="flex items-center gap-2 hover:text-gold-400 transition-colors"
-              >
-                <Phone className="w-4 h-4" />
-                {siteConfig.phone}
-              </a>
-            </div>
-          </div>
-        </Container>
+          </Container>
+        </div>
       </div>
 
       {/* Main Navbar */}
       <header
         className={clsx(
-          'sticky top-0 z-50 transition-all duration-300',
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
           isScrolled
-            ? 'bg-navy-900/98 backdrop-blur-md shadow-lg'
-            : 'bg-navy-900'
+            ? 'bg-navy-950/98 backdrop-blur-xl shadow-premium'
+            : 'bg-transparent'
         )}
+        style={{
+          top: isScrolled ? 0 : 'auto',
+          position: isScrolled ? 'fixed' : 'absolute',
+        }}
       >
         <Container>
-          <nav className="flex items-center justify-between h-20">
+          <nav className={clsx(
+            'flex items-center justify-between transition-all duration-300',
+            isScrolled ? 'h-20' : 'h-24'
+          )}>
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-gold-400 to-gold-600 rounded-sm flex items-center justify-center">
-                <span className="text-navy-950 font-serif font-bold text-xl">S</span>
+              {/* Logo Mark */}
+              <div className={clsx(
+                'flex items-center justify-center transition-all duration-300',
+                isScrolled ? 'w-10 h-10' : 'w-12 h-12'
+              )}>
+                <div className="w-full h-full bg-gold-500 flex items-center justify-center">
+                  <span className="text-navy-950 font-serif font-bold text-xl">M</span>
+                </div>
               </div>
+
+              {/* Logo Text */}
               <div className="hidden sm:block">
                 <span className="text-white font-serif text-xl font-bold tracking-tight group-hover:text-gold-400 transition-colors">
-                  Sterling
+                  Morrison
                 </span>
                 <span className="text-gold-500 font-serif text-xl"> & Associates</span>
               </div>
@@ -95,7 +120,7 @@ export function Navbar() {
                   key={item.name}
                   href={item.href}
                   className={clsx(
-                    'nav-link py-2',
+                    'nav-link-premium',
                     pathname === item.href && 'active'
                   )}
                 >
@@ -107,9 +132,9 @@ export function Navbar() {
             {/* CTA Button */}
             <div className="hidden lg:flex items-center gap-4">
               <Link href="/contact">
-                <Button variant="primary" size="md">
+                <button className="btn-premium text-sm">
                   Free Consultation
-                </Button>
+                </button>
               </Link>
             </div>
 
@@ -120,9 +145,9 @@ export function Navbar() {
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
+                <X className="w-7 h-7" />
               ) : (
-                <Menu className="w-6 h-6" />
+                <Menu className="w-7 h-7" />
               )}
             </button>
           </nav>
@@ -136,10 +161,10 @@ export function Navbar() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="lg:hidden bg-navy-800 border-t border-navy-700 overflow-hidden"
+              className="lg:hidden bg-navy-950 border-t border-navy-800 overflow-hidden"
             >
               <Container>
-                <div className="py-6 space-y-4">
+                <div className="py-8 space-y-2">
                   {siteConfig.navigation.map((item, index) => (
                     <motion.div
                       key={item.name}
@@ -150,10 +175,10 @@ export function Navbar() {
                       <Link
                         href={item.href}
                         className={clsx(
-                          'block py-3 px-4 text-lg font-medium rounded-sm transition-colors',
+                          'block py-4 px-4 text-lg font-medium border-b border-navy-800 transition-colors',
                           pathname === item.href
-                            ? 'text-gold-400 bg-navy-700/50'
-                            : 'text-white hover:text-gold-400 hover:bg-navy-700/30'
+                            ? 'text-gold-400 border-gold-500/30'
+                            : 'text-white hover:text-gold-400 hover:pl-6'
                         )}
                       >
                         {item.name}
@@ -165,20 +190,23 @@ export function Navbar() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="pt-4 border-t border-navy-700"
+                    className="pt-6"
                   >
                     <Link href="/contact" className="block">
-                      <Button variant="primary" size="lg" className="w-full">
+                      <button className="w-full btn-premium">
                         Free Consultation
-                      </Button>
+                      </button>
                     </Link>
                     <a
                       href={`tel:${siteConfig.phone}`}
-                      className="flex items-center justify-center gap-2 mt-4 py-3 text-gold-400"
+                      className="flex items-center justify-center gap-3 mt-4 py-4 text-gold-400 text-lg font-medium"
                     >
                       <Phone className="w-5 h-5" />
                       {siteConfig.phone}
                     </a>
+                    <p className="text-center text-navy-400 text-sm mt-2">
+                      Available 24/7
+                    </p>
                   </motion.div>
                 </div>
               </Container>

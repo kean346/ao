@@ -1,125 +1,184 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
-import { motion, useInView } from 'framer-motion';
+import Image from 'next/image';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import {
-  Building2,
-  Scale,
-  Home,
-  Landmark,
-  Lightbulb,
-  Users,
-  ArrowRight,
-  LucideIcon,
+  Shield, Heart, Scale, Users, Briefcase, Building,
+  ArrowRight, ChevronDown, ChevronUp, X
 } from 'lucide-react';
-import { Container, Section, SectionHeader } from '@/components/ui/container';
-import { Card } from '@/components/ui/card';
+import { Container, Section } from '@/components/ui/container';
 import { practiceAreas } from '@/lib/config';
 
-const iconMap: Record<string, LucideIcon> = {
-  Building2,
+const iconMap: Record<string, React.ElementType> = {
+  Shield,
+  Heart,
   Scale,
-  Home,
-  Landmark,
-  Lightbulb,
   Users,
+  Briefcase,
+  Building,
 };
 
 interface PracticeAreasProps {
-  showAll?: boolean;
   limit?: number;
+  showAll?: boolean;
 }
 
-export function PracticeAreas({ showAll = false, limit = 6 }: PracticeAreasProps) {
+export function PracticeAreas({ limit, showAll = false }: PracticeAreasProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const displayedAreas = showAll ? practiceAreas : practiceAreas.slice(0, limit);
+  const displayedAreas = showAll ? practiceAreas : (limit ? practiceAreas.slice(0, limit) : practiceAreas);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
+  const toggleExpand = (id: string) => {
+    setExpandedId(expandedId === id ? null : id);
   };
 
   return (
-    <Section background="cream" ref={ref}>
-      <Container>
-        <SectionHeader
-          title="Practice Areas"
-          subtitle="Our attorneys bring decades of combined experience across a comprehensive range of legal disciplines, delivering exceptional results for clients."
-        />
+    <Section background="light" ref={ref} className="relative overflow-hidden">
+      {/* Background texture */}
+      <div className="absolute inset-0 texture-paper" />
 
+      {/* Decorative elements */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gold-500/5 rounded-full blur-[150px] -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-burgundy-600/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
+
+      <Container className="relative z-10">
+        {/* Section Header */}
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6 }}
+          className="section-header"
         >
-          {displayedAreas.map((area) => {
+          <p className="section-eyebrow">Our Expertise</p>
+          <h2 className="section-title">Practice Areas</h2>
+          <div className="gold-divider mx-auto mb-6" />
+          <p className="section-subtitle mx-auto">
+            Comprehensive legal representation across all major practice areas.
+            Our attorneys bring decades of experience and a proven track record of success.
+          </p>
+        </motion.div>
+
+        {/* Practice Areas Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {displayedAreas.map((area, index) => {
             const Icon = iconMap[area.icon] || Scale;
+            const isExpanded = expandedId === area.id;
+
             return (
-              <motion.div key={area.slug} variants={itemVariants}>
-                <Link href={`/services/${area.slug}`}>
-                  <Card
-                    variant="elevated"
-                    padding="lg"
-                    hover
-                    className="h-full group"
+              <motion.div
+                key={area.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="group"
+              >
+                <div
+                  className={`relative bg-white border border-navy-100 transition-all duration-500 cursor-pointer
+                    ${isExpanded ? 'shadow-elegant' : 'shadow-card hover:shadow-card-hover hover:-translate-y-1'}`}
+                >
+                  {/* Card Header */}
+                  <div
+                    onClick={() => toggleExpand(area.id)}
+                    className="p-6 md:p-8"
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="w-14 h-14 bg-gradient-to-br from-gold-400 to-gold-600 rounded-sm flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                        <Icon className="w-7 h-7 text-navy-950" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-xl font-serif font-bold text-navy-900 mb-2 group-hover:text-gold-600 transition-colors">
-                          {area.name}
-                        </h3>
-                        <p className="text-navy-600 text-sm leading-relaxed mb-4">
-                          {area.shortDescription}
-                        </p>
-                        <div className="flex items-center text-gold-600 font-medium text-sm group-hover:text-gold-500 transition-colors">
-                          Learn More
-                          <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-2 transition-transform" />
-                        </div>
-                      </div>
+                    {/* Icon */}
+                    <div className="w-14 h-14 bg-navy-950 flex items-center justify-center mb-6 group-hover:bg-gold-500 transition-colors duration-300">
+                      <Icon className="w-7 h-7 text-gold-500 group-hover:text-navy-950 transition-colors duration-300" />
                     </div>
-                  </Card>
-                </Link>
+
+                    {/* Title */}
+                    <h3 className="text-xl md:text-2xl font-serif font-bold text-navy-950 mb-3 group-hover:text-gold-600 transition-colors">
+                      {area.name}
+                    </h3>
+
+                    {/* Short Description */}
+                    <p className="text-navy-600 leading-relaxed mb-4">
+                      {area.shortDescription}
+                    </p>
+
+                    {/* Expand Toggle */}
+                    <button className="flex items-center gap-2 text-gold-600 font-medium text-sm uppercase tracking-wide group/btn">
+                      <span>{isExpanded ? 'Show Less' : 'Learn More'}</span>
+                      <motion.div
+                        animate={{ rotate: isExpanded ? 180 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <ChevronDown className="w-4 h-4" />
+                      </motion.div>
+                    </button>
+                  </div>
+
+                  {/* Expanded Content */}
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden border-t border-navy-100"
+                      >
+                        <div className="p-6 md:p-8 bg-cream-50">
+                          {/* Full Description */}
+                          <p className="text-navy-700 mb-6 leading-relaxed">
+                            {area.description}
+                          </p>
+
+                          {/* Services List */}
+                          <div className="mb-6">
+                            <h4 className="text-sm font-semibold text-navy-950 uppercase tracking-wide mb-4">
+                              What We Handle
+                            </h4>
+                            <ul className="grid grid-cols-2 gap-2">
+                              {area.features.map((feature) => (
+                                <li
+                                  key={feature}
+                                  className="flex items-center gap-2 text-sm text-navy-600"
+                                >
+                                  <div className="w-1.5 h-1.5 bg-gold-500 rounded-full" />
+                                  {feature}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          {/* CTA */}
+                          <Link href={`/services/${area.slug}`}>
+                            <button className="flex items-center gap-2 text-gold-600 font-semibold hover:text-gold-700 transition-colors group/link">
+                              <span>View Full Details</span>
+                              <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                            </button>
+                          </Link>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Gold bottom accent */}
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                </div>
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
 
-        {!showAll && practiceAreas.length > limit && (
+        {/* View All CTA */}
+        {!showAll && limit && practiceAreas.length > limit && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ delay: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
             className="text-center mt-12"
           >
-            <Link
-              href="/services"
-              className="inline-flex items-center gap-2 text-navy-700 font-semibold hover:text-gold-600 transition-colors group"
-            >
-              View All Practice Areas
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <Link href="/services">
+              <button className="btn-elegant group inline-flex items-center gap-3">
+                <span>View All Practice Areas</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
             </Link>
           </motion.div>
         )}

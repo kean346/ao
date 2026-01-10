@@ -1,210 +1,222 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Award, Scale, Shield } from 'lucide-react';
+import { ArrowRight, Play, Phone, Award, Scale, Shield, ChevronDown } from 'lucide-react';
 import { Container } from '@/components/ui/container';
-import { Button } from '@/components/ui/button';
 import { siteConfig } from '@/lib/config';
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '40%']);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+
+  // Handle video load
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.addEventListener('loadeddata', () => setVideoLoaded(true));
+      video.addEventListener('error', () => setVideoLoaded(false));
+    }
+  }, []);
+
+  const scrollToNext = () => {
+    const nextSection = document.querySelector('#case-results');
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[90vh] flex items-center overflow-hidden bg-navy-950"
+      className="relative min-h-screen flex items-center overflow-hidden bg-navy-950"
     >
-      {/* Background Image with Parallax */}
+      {/* Video Background */}
       <motion.div
-        style={{ y }}
+        style={{ y, scale }}
         className="absolute inset-0 z-0"
       >
+        {/* Video Element */}
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            videoLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          poster={siteConfig.hero.imageUrl}
+        >
+          <source src={siteConfig.hero.videoUrl} type="video/mp4" />
+        </video>
+
+        {/* Fallback Image */}
         <Image
-          src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=crop"
-          alt="Professional law office"
+          src={siteConfig.hero.imageUrl}
+          alt="Morrison & Associates - Premier Law Firm"
           fill
-          className="object-cover"
+          className={`object-cover transition-opacity duration-1000 ${
+            videoLoaded ? 'opacity-0' : 'opacity-100'
+          }`}
           priority
+          quality={90}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/98 via-navy-900/95 to-navy-950/85" />
+
+        {/* Multi-layer Overlay for Premium Feel */}
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/98 via-navy-950/90 to-navy-950/75" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-transparent to-navy-950/30" />
+        <div className="absolute inset-0 bg-gradient-to-br from-burgundy-600/10 via-transparent to-transparent" />
+
+        {/* Subtle texture overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
+          }}
+        />
       </motion.div>
 
       {/* Decorative Elements */}
-      <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-navy-950 to-transparent z-10" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold-500/5 rounded-full blur-3xl" />
-      <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-gold-400/10 rounded-full blur-2xl" />
+      <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-navy-950 to-transparent z-10 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gold-500/5 rounded-full blur-[100px] z-10 pointer-events-none" />
+      <div className="absolute top-1/4 right-1/3 w-[300px] h-[300px] bg-burgundy-600/10 rounded-full blur-[80px] z-10 pointer-events-none" />
+
+      {/* Gold accent lines */}
+      <div className="absolute top-0 left-[10%] w-px h-[200px] bg-gradient-to-b from-gold-500/50 to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-[100px] left-[10%] w-[100px] h-px bg-gradient-to-r from-gold-500/50 to-transparent z-10 pointer-events-none" />
 
       {/* Content */}
-      <Container className="relative z-20">
+      <Container className="relative z-20 pt-20 pb-32">
         <motion.div
           style={{ opacity }}
-          className="grid lg:grid-cols-2 gap-12 items-center"
+          className="max-w-5xl"
         >
-          {/* Left Column - Text Content */}
-          <div className="max-w-2xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gold-500/10 border border-gold-500/20 rounded-full mb-6"
-            >
+          {/* Eyebrow Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="inline-flex items-center gap-3 mb-8"
+          >
+            <div className="flex items-center gap-2 px-5 py-2.5 bg-gold-500/10 border border-gold-500/30 backdrop-blur-sm">
               <Award className="w-4 h-4 text-gold-500" />
-              <span className="text-gold-400 text-sm font-medium">
+              <span className="text-gold-400 text-sm font-semibold tracking-wide uppercase">
                 Nationally Recognized Excellence
               </span>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold text-white leading-tight mb-6"
-            >
-              Exceptional Legal
-              <span className="block text-gold-400">Representation</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg md:text-xl text-navy-200 mb-8 leading-relaxed"
-            >
-              For over 35 years, Sterling & Associates has provided sophisticated
-              legal counsel to individuals, businesses, and institutions. Our
-              commitment to excellence drives everything we do.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row gap-4 mb-12"
-            >
-              <Link href="/contact">
-                <Button variant="primary" size="lg" className="group">
-                  Schedule Consultation
-                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-              <Link href="/services">
-                <Button variant="secondary" size="lg">
-                  Our Practice Areas
-                </Button>
-              </Link>
-            </motion.div>
-
-            {/* Trust Indicators */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-wrap gap-8"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gold-500/10 rounded-full flex items-center justify-center">
-                  <Scale className="w-6 h-6 text-gold-500" />
-                </div>
-                <div>
-                  <p className="text-white font-semibold">500+</p>
-                  <p className="text-navy-400 text-sm">Cases Won</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gold-500/10 rounded-full flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-gold-500" />
-                </div>
-                <div>
-                  <p className="text-white font-semibold">98%</p>
-                  <p className="text-navy-400 text-sm">Client Satisfaction</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gold-500/10 rounded-full flex items-center justify-center">
-                  <Award className="w-6 h-6 text-gold-500" />
-                </div>
-                <div>
-                  <p className="text-white font-semibold">35+</p>
-                  <p className="text-navy-400 text-sm">Years Experience</p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Right Column - Feature Cards (visible on larger screens) */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="hidden lg:block"
-          >
-            <div className="relative">
-              {/* Main Featured Card */}
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-sm p-8">
-                <h3 className="text-xl font-serif font-bold text-white mb-4">
-                  Why Choose Sterling & Associates?
-                </h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-gold-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-navy-950 text-sm font-bold">1</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-medium">Proven Track Record</p>
-                      <p className="text-navy-300 text-sm">Over $50 billion in transactions closed</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-gold-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-navy-950 text-sm font-bold">2</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-medium">Elite Team</p>
-                      <p className="text-navy-300 text-sm">50+ attorneys from top law schools</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-gold-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-navy-950 text-sm font-bold">3</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-medium">Client-Focused</p>
-                      <p className="text-navy-300 text-sm">Personalized attention for every matter</p>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-gold-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-navy-950 text-sm font-bold">4</span>
-                    </div>
-                    <div>
-                      <p className="text-white font-medium">National Recognition</p>
-                      <p className="text-navy-300 text-sm">Chambers USA, Best Lawyers, Super Lawyers</p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Floating Badge */}
-              <div className="absolute -top-4 -right-4 bg-gold-500 text-navy-950 px-4 py-2 rounded-sm font-bold text-sm shadow-lg">
-                AV Rated
-              </div>
             </div>
+          </motion.div>
+
+          {/* Main Headline */}
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="display-text text-white mb-8"
+          >
+            <span className="block">Justice.</span>
+            <span className="block text-gold-500">Integrity.</span>
+            <span className="block">Results.</span>
+          </motion.h1>
+
+          {/* Subheadline */}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xl md:text-2xl text-navy-200 mb-10 max-w-2xl leading-relaxed font-light"
+          >
+            {siteConfig.hero.subheadline}
+          </motion.p>
+
+          {/* Gold divider */}
+          <motion.div
+            initial={{ opacity: 0, width: 0 }}
+            animate={{ opacity: 1, width: 80 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="h-1 bg-gradient-to-r from-gold-500 to-gold-400 mb-10"
+          />
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="flex flex-col sm:flex-row gap-4 mb-16"
+          >
+            <Link href="/contact">
+              <button className="group btn-premium flex items-center gap-3">
+                <span>Free Consultation</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </Link>
+            <a href={`tel:${siteConfig.phone}`}>
+              <button className="btn-premium-outline flex items-center gap-3">
+                <Phone className="w-5 h-5" />
+                <span>{siteConfig.phone}</span>
+              </button>
+            </a>
+          </motion.div>
+
+          {/* Stats Row */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12"
+          >
+            {siteConfig.stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.8 + index * 0.1 }}
+                className="text-center md:text-left"
+              >
+                <p className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-gold-500 mb-2">
+                  {stat.value}
+                </p>
+                <p className="text-navy-300 text-sm uppercase tracking-wider">
+                  {stat.label}
+                </p>
+              </motion.div>
+            ))}
           </motion.div>
         </motion.div>
       </Container>
 
+      {/* Scroll Indicator */}
+      <motion.button
+        onClick={scrollToNext}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-navy-300 hover:text-gold-500 transition-colors cursor-pointer"
+      >
+        <span className="text-xs uppercase tracking-widest">Scroll</span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        >
+          <ChevronDown className="w-6 h-6" />
+        </motion.div>
+      </motion.button>
+
       {/* Bottom Gradient Fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-cream-50 to-transparent z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-cream-50 to-transparent z-10 pointer-events-none" />
     </section>
   );
 }

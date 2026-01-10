@@ -25,7 +25,7 @@ const Container = forwardRef<HTMLDivElement, ContainerProps>(
         className={clsx(
           'mx-auto w-full',
           sizes[size],
-          padding && 'px-4 sm:px-6 lg:px-8',
+          padding && 'px-4 sm:px-6 lg:px-8 xl:px-12',
           className
         )}
         {...props}
@@ -38,7 +38,7 @@ const Container = forwardRef<HTMLDivElement, ContainerProps>(
 
 Container.displayName = 'Container';
 
-// Section Component - for consistent section spacing
+// Section Component - for consistent section spacing with premium styling
 interface SectionProps extends React.HTMLAttributes<HTMLElement> {
   background?: 'light' | 'dark' | 'cream' | 'gradient';
   spacing?: 'sm' | 'md' | 'lg';
@@ -48,9 +48,9 @@ const Section = forwardRef<HTMLElement, SectionProps>(
   ({ className, background = 'light', spacing = 'lg', children, ...props }, ref) => {
     const backgrounds = {
       light: 'bg-white',
-      dark: 'bg-navy-900 text-white',
+      dark: 'bg-navy-950 text-white',
       cream: 'bg-cream-100',
-      gradient: 'bg-gradient-to-br from-navy-900 via-navy-800 to-navy-950 text-white',
+      gradient: 'bg-gradient-to-br from-navy-950 via-navy-900 to-navy-950 text-white',
     };
 
     const spacings = {
@@ -73,16 +73,17 @@ const Section = forwardRef<HTMLElement, SectionProps>(
 
 Section.displayName = 'Section';
 
-// Section Header Component
+// Section Header Component - Premium styling
 interface SectionHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   subtitle?: string;
   alignment?: 'left' | 'center';
   dark?: boolean;
+  eyebrow?: string;
 }
 
 const SectionHeader = forwardRef<HTMLDivElement, SectionHeaderProps>(
-  ({ className, title, subtitle, alignment = 'center', dark = false, ...props }, ref) => {
+  ({ className, title, subtitle, alignment = 'center', dark = false, eyebrow, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -93,17 +94,20 @@ const SectionHeader = forwardRef<HTMLDivElement, SectionHeaderProps>(
         )}
         {...props}
       >
+        {eyebrow && (
+          <p className="section-eyebrow">{eyebrow}</p>
+        )}
         <h2
           className={clsx(
             'text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4',
-            dark ? 'text-white' : 'text-navy-900'
+            dark ? 'text-white' : 'text-navy-950'
           )}
         >
           {title}
         </h2>
         <div
           className={clsx(
-            'w-16 h-1 bg-gradient-to-r from-gold-400 to-gold-600 mb-6',
+            'w-20 h-1 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-400 mb-6',
             alignment === 'center' && 'mx-auto'
           )}
         />
