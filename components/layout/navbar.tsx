@@ -41,11 +41,11 @@ export function Navbar() {
 
   return (
     <>
-      {/* Top Bar - Only visible on desktop */}
+      {/* Top Bar - Fixed on desktop, hidden when scrolled */}
       <div
         className={clsx(
-          'hidden lg:block transition-all duration-500 overflow-hidden',
-          isScrolled ? 'h-0 opacity-0' : 'h-auto opacity-100'
+          'hidden lg:block fixed top-0 left-0 right-0 z-50 transition-all duration-500',
+          isScrolled ? 'opacity-0 -translate-y-full' : 'opacity-100 translate-y-0'
         )}
       >
         <div className="bg-navy-950 text-navy-200 text-sm border-b border-navy-800">
@@ -77,15 +77,11 @@ export function Navbar() {
       {/* Main Navbar */}
       <header
         className={clsx(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
+          'fixed left-0 right-0 z-50 transition-all duration-500',
           isScrolled
-            ? 'bg-navy-950/98 backdrop-blur-xl shadow-premium'
-            : 'bg-transparent'
+            ? 'top-0 bg-navy-950/98 backdrop-blur-xl shadow-premium'
+            : 'lg:top-[41px] top-0 bg-transparent'
         )}
-        style={{
-          top: isScrolled ? 0 : 'auto',
-          position: isScrolled ? 'fixed' : 'absolute',
-        }}
       >
         <Container>
           <nav className={clsx(
