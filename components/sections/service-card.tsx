@@ -1,32 +1,28 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
 import type { Service } from '@/lib/config';
+import { DriftMark } from './drift-mark';
+import styles from './service-card.module.css';
 
 export function ServiceCard({
   service,
-  active,
+  id,
+  className,
   sizes,
 }: {
   service: Service;
-  active?: boolean;
+  id?: string;
+  className?: string;
   sizes: string;
 }) {
   return (
-    <li className="service-card" data-active={active}>
-      <Link href={`/services/${service.slug}`}>
-        <div className="service-card-image">
-          <Image src={service.image} alt={service.imageAlt} fill sizes={sizes} />
-        </div>
-        <div className="service-card-copy">
-          <span className="service-number">{service.number}</span>
-          <div>
-            <h3>{service.title}</h3>
-            <p>{service.summary}</p>
-          </div>
-          <ArrowUpRight className="service-arrow" aria-hidden="true" size={25} strokeWidth={1.3} />
-        </div>
-      </Link>
-    </li>
+    <article id={id} className={className ? `${styles.card} ${className}` : styles.card}>
+      <DriftMark className={styles.mark} />
+      <h3><Link href={`/services/${service.slug}`}>{service.title}</Link></h3>
+      <div className={styles.media}>
+        <Image src={service.image} alt={service.imageAlt} fill sizes={sizes} unoptimized />
+      </div>
+      <p>{service.summary}</p>
+    </article>
   );
 }

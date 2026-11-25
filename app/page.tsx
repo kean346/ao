@@ -1,5 +1,3 @@
-import '@fontsource-variable/inter';
-import '@fontsource/instrument-serif/400-italic.css';
 import { DriftAbout } from '@/components/sections/drift-about';
 import { DriftServices } from '@/components/sections/drift-services';
 import { Hero } from '@/components/sections/hero';

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ServiceCard } from '@/components/sections/service-card';
+import { DriftNavigation } from '@/components/sections/drift-navigation';
 import { QuoteCta } from '@/components/sections/quote-cta';
 import { procurementStages, services } from '@/lib/config';
 import styles from './services.module.css';
@@ -11,8 +12,9 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <div className={styles.page}>
+    <div className={`ao-services-view ${styles.page}`}>
       <section className={`${styles.banner} dark-surface`} aria-labelledby="services-title">
+        <DriftNavigation />
         <div className={`${styles.intro} frame-width`}>
           <h1 id="services-title">Our services</h1>
           <p>Bulk stationery, commercial printing and ongoing supply for businesses, schools and institutions.</p>
@@ -23,7 +25,9 @@ export default function ServicesPage() {
         <div className="frame-width">
           <ul className={styles.services}>
             {services.map(service => (
-              <ServiceCard key={service.slug} service={service} sizes="(min-width: 768px) 48vw, 94vw" />
+              <li key={service.slug}>
+                <ServiceCard service={service} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 44vw, 94vw" />
+              </li>
             ))}
           </ul>
         </div>

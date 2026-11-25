@@ -13,7 +13,7 @@ npm run dev
 
 The development server uses port 3000 by default. Run `npm run lint` and `npm run build` to validate the project.
 
-The home, services, service details, about and quote pages use shared content from `lib/config.ts`. The homepage follows the supplied Drift landing-page brief. It uses AO’s looping print-press video and original imagery for the three services. Visitors who prefer reduced motion see a still from the same video.
+The home, services, service details, about and quote pages use shared content from `lib/config.ts`. The homepage opens with the Smoked Brass design, a folded-cardstock star and animated rings. The service cards are shared with the Services page. The hero and service reveals respect reduced-motion preferences.
 
 The header and footer use the stacked gold artwork in `public/media/ao-logo.webp`, recreated from the supplied AO logo references.
 

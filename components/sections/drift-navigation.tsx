@@ -2,15 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import './drift-navigation.css';
 
-const links = [
-  { href: '#services', label: 'Services' },
-  { href: '#about', label: 'About AO' },
-  { href: '/why-ao', label: 'Why choose AO?' },
-  { href: '/contact#quote-form', label: 'Request a quote' },
-];
-
-export function DriftNavigation() {
+export function DriftNavigation({ onHome = false }: { onHome?: boolean }) {
+  const links = [
+    { href: onHome ? '#services' : '/services', label: 'Services' },
+    { href: onHome ? '#about' : '/about', label: 'About AO' },
+    { href: '/why-ao', label: 'Why choose AO?' },
+    { href: '/contact#quote-form', label: 'Request a quote' },
+  ];
   const [open, setOpen] = useState(false);
   const nav = useRef<HTMLElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);

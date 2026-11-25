@@ -21,8 +21,8 @@ export const services = [
     summary: 'High-volume office, school and institutional stationery procurement.',
     overview:
       'Source day-to-day stationery and paper in the quantities your organisation needs. Share a product list or a set of specifications so we can put together a quotation around your order.',
-    image: '/media/stationery.webp',
-    imageAlt: 'Ivory sheets, envelopes and graphite stationery arranged on a dark worktop',
+    image: '/media/drift-stationery.webp',
+    imageAlt: 'Paper reams, notebooks and envelopes on a sunlit worktable',
     capabilities: [
       'Office stationery and everyday consumables',
       'School and institutional stationery orders',
@@ -42,8 +42,8 @@ export const services = [
     summary: 'Corporate printing, bulk paper supply, branded stationery and print production.',
     overview:
       'Specify the stock, format, finish and run size for your print job. We can quote on print production, branded stationery and paper supply for internal and public-facing materials.',
-    image: '/media/printing.webp',
-    imageAlt: 'A light sheet of paper feeding through the steel rollers of a printing press',
+    image: '/media/drift-printing.webp',
+    imageAlt: 'An ochre print proof passing through the rollers of an offset press',
     capabilities: [
       'Corporate documents and printed materials',
       'Branded letterheads, envelopes and stationery',
@@ -63,8 +63,8 @@ export const services = [
     summary: 'Recurring supply agreements, tender-related fulfilment and dedicated procurement partnerships.',
     overview:
       'We coordinate recurring orders for public institutions and private businesses, from tender specifications through to scheduled delivery. Share a supply schedule or tender brief to start discussing scope.',
-    image: '/media/fulfilment.webp',
-    imageAlt: 'Unbranded cartons and paper reams grouped on a pallet in a distribution space',
+    image: '/media/drift-fulfilment.webp',
+    imageAlt: 'Cartons and wrapped paper reams packed on a dispatch pallet',
     capabilities: [
       'Recurring orders and scheduled replenishment',
       'Supply scope based on a tender or procurement brief',

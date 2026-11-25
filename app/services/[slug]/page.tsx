@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { ActionLink } from '@/components/ui/action-link';
+import { DriftNavigation } from '@/components/sections/drift-navigation';
 import { QuoteCta } from '@/components/sections/quote-cta';
 import { services } from '@/lib/config';
 import styles from '../services.module.css';
@@ -28,8 +29,9 @@ export default async function ServicePage({ params }: PageProps) {
   const quoteHref = `/contact?service=${service.slug}#quote-form`;
 
   return (
-    <div className={styles.page}>
-      <section className={`${styles.banner} ${styles.detail} dark-surface`} aria-labelledby="service-title">
+    <div className={`ao-services-view ${styles.page}`}>
+      <section className={`${styles.banner} dark-surface`} aria-labelledby="service-title">
+        <DriftNavigation />
         <div className="frame-width">
           <Link className={styles.back} href="/services">
             <ArrowLeft aria-hidden="true" size={16} strokeWidth={1.5} />
@@ -44,7 +46,7 @@ export default async function ServicePage({ params }: PageProps) {
               </ActionLink>
             </div>
             <div className={styles.photo}>
-              <Image src={service.image} alt={service.imageAlt} fill priority sizes="(min-width: 768px) 49vw, 94vw" />
+              <Image src={service.image} alt={service.imageAlt} fill priority unoptimized sizes="(min-width: 768px) 49vw, 94vw" />
             </div>
           </div>
         </div>

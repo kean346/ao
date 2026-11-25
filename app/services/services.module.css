@@ -1,13 +1,15 @@
 .page {
   background: var(--paper);
+  font-family: "Inter Variable", Arial, sans-serif;
 }
 
 .banner {
-  background: #141414;
-  padding-block: clamp(40px, 6vw, 76px);
+  position: relative;
+  background: radial-gradient(ellipse at 50% 100%, #453224, #1c1814 76%);
+  padding-block: clamp(106px, 12vw, 143px) clamp(42px, 6vw, 70px);
 }
 
-.banner h1, .process h2, .requirements h2, .page :global(.quote-band h2) {
+.process h2, .requirements h2, .page :global(.quote-band h2) {
   font-family: var(--serif);
   font-weight: 550;
   letter-spacing: -.035em;
@@ -15,7 +17,9 @@
 }
 
 .banner h1 {
-  font-size: clamp(2.75rem, 6vw, 5.125rem);
+  font-size: clamp(2.75rem, 5.4vw, 5rem);
+  font-weight: 430;
+  color: #fff5e6;
 }
 
 .intro {
@@ -47,80 +51,19 @@
   padding-block: clamp(42px, 5.2vw, 74px);
 }
 
+.catalog { background: #211b14; }
+
 .services {
   display: grid;
-  gap: clamp(24px, 4vw, 55px);
+  gap: clamp(1rem, 2vw, 1.6rem);
 }
 
-.services > li + li {
-  border-top: 1px solid var(--rule);
-  padding-top: clamp(24px, 4vw, 55px);
+@media (min-width: 640px) {
+  .services { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-.services :global(.service-card > a) {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, .95fr);
-  align-items: center;
-  column-gap: clamp(28px, 5.8vw, 82px);
-}
-
-.services :global(.service-card-image) {
-  position: relative;
-  aspect-ratio: 1.9;
-  overflow: hidden;
-  background: var(--charcoal);
-}
-
-.services :global(.service-card-image img), .photo img {
-  object-fit: cover;
-  filter: saturate(.35);
-}
-
-.services :global(.service-card-copy) {
-  display: grid;
-  min-width: 0;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  padding: 8px 0;
-  column-gap: 17px;
-}
-
-.services :global(.service-number) {
-  display: none;
-}
-
-.services :global(.service-arrow) {
-  width: 20px;
-  height: 20px;
-  margin-top: 4px;
-  color: #806a44;
-}
-
-.services :global(.service-card-copy h3) {
-  font-family: var(--serif);
-  font-size: clamp(1.85rem, 3.55vw, 3.45rem);
-  font-weight: 550;
-  letter-spacing: -.035em;
-  line-height: 1.03;
-}
-
-.services :global(.service-card-copy p) {
-  max-width: 44ch;
-  margin-top: 12px;
-  color: var(--copy);
-  font-size: 1rem;
-}
-
-.services :global(.service-card > a:is(:hover, :focus-visible) h3) {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: .15em;
-}
-
-@media (min-width: 768px) {
-  .services > li:nth-child(even) :global(.service-card-image) {
-    order: 2;
-  }
+@media (min-width: 1024px) {
+  .services { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 .process {
@@ -153,10 +96,6 @@
 .stages p, .requirements p {
   margin-top: 10px;
   color: var(--copy);
-}
-
-.detail {
-  padding-top: clamp(18px, 3.5vw, 44px);
 }
 
 .back {
@@ -192,8 +131,11 @@
   position: relative;
   aspect-ratio: 1.68;
   overflow: hidden;
+  border-radius: 1rem;
   background: var(--charcoal);
 }
+
+.photo img { object-fit: cover; }
 
 .requirements header {
   max-width: 60ch;
@@ -241,12 +183,8 @@
 }
 
 @media (max-width: 767px) {
-  .services :global(.service-card > a), .detailIntro, .orderLists {
+  .detailIntro, .orderLists {
     grid-template-columns: 1fr;
-  }
-
-  .services :global(.service-card-copy) {
-    padding: 18px 0 0;
   }
 
   .detailIntro h1 {

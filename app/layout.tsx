@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '@fontsource-variable/dm-sans';
+import '@fontsource-variable/inter';
 import '@fontsource-variable/cormorant-garamond';
 import '@fontsource-variable/cormorant-garamond/wght-italic.css';
 import './globals.css';

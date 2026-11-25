@@ -1,28 +1,12 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { DriftMark } from '@/components/sections/drift-mark';
+import { ServiceCard } from '@/components/sections/service-card';
 import { DriftQuoteBar } from '@/components/sections/drift-quote-bar';
 import { services } from '@/lib/config';
 import { useMotionAllowed } from '@/lib/use-motion-allowed';
 import styles from './drift-services.module.css';
-
-const cardPhotos: Record<string, { src: string; alt: string }> = {
-  'bulk-stationery-supply': {
-    src: '/media/drift-stationery.webp',
-    alt: 'Paper reams, notebooks and envelopes on a sunlit worktable',
-  },
-  'commercial-paper-printing': {
-    src: '/media/drift-printing.webp',
-    alt: 'An orange and black print proof passing through an offset press',
-  },
-  'long-term-supply-contracts': {
-    src: '/media/drift-fulfilment.webp',
-    alt: 'Cartons and wrapped paper reams packed on a dispatch pallet',
-  },
-};
 
 export function DriftServices() {
   const motionAllowed = useMotionAllowed();
@@ -102,21 +86,13 @@ export function DriftServices() {
 
         <div className={styles.cards} ref={list}>
           {services.map(service => (
-            <article className={styles.card} id={`feature-${service.slug}`} key={service.slug}>
-              <DriftMark className={styles.mark} />
-              <h3>
-                <Link href={`/services/${service.slug}`}>{service.title}</Link>
-              </h3>
-              <div className={styles.media}>
-                <Image
-                  src={cardPhotos[service.slug]?.src ?? service.image}
-                  alt={cardPhotos[service.slug]?.alt ?? service.imageAlt}
-                  fill
-                  sizes="(min-width: 1024px) 50vw, 90vw"
-                />
-              </div>
-              <p>{service.summary}</p>
-            </article>
+            <ServiceCard
+              id={`feature-${service.slug}`}
+              className={styles.card}
+              key={service.slug}
+              service={service}
+              sizes="(min-width: 1024px) 31rem, 90vw"
+            />
           ))}
         </div>
       </div>

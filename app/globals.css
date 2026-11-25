@@ -137,6 +137,10 @@ main:focus {
   transition: background-color 200ms ease;
 }
 
+body:has(.ao-services-view) .site-header {
+  display: none;
+}
+
 .site-header[data-home='true'] {
   position: fixed;
   inset: 0 0 auto;
