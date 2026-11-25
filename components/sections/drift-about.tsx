@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Mail, Plus } from 'lucide-react';
+import { ArrowUpRight, Mail, Plus } from 'lucide-react';
 import { DriftMark } from './drift-mark';
 import styles from './drift-about.module.css';
 
@@ -17,6 +17,11 @@ export function DriftAbout() {
           sourcing, production and delivery.
         </p>
       </div>
+
+      <Link href="/why-ao" className={styles.more}>
+        <span><strong>Why choose AO?</strong> <span>Buying benefits, compliance and how orders work.</span></span>
+        <ArrowUpRight aria-hidden="true" size={20} />
+      </Link>
 
       <div className={styles.divider} aria-hidden="true"><span /></div>
       <div className={styles.actions}>

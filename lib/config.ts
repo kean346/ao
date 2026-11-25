@@ -6,7 +6,7 @@ export const siteConfig = {
   description:
     'Reliable bulk stationery, commercial printing and long-term supply solutions for South African organisations.',
   navigation: [
-    { label: 'Services', href: '/services' },
+    { label: 'Services', href: '/#services' },
     { label: 'About', href: '/about' },
     { label: 'Why choose AO?', href: '/why-ao' },
     { label: 'Contact', href: '/contact' },

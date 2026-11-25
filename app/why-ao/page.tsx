@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { ActionLink } from '@/components/ui/action-link';
-import { procurementAdvantages } from '@/lib/config';
+import { DriftNavigation } from '@/components/sections/drift-navigation';
+import { procurementAdvantages, procurementStages } from '@/lib/config';
 import styles from './why-ao.module.css';
 
 export const metadata: Metadata = {
@@ -16,15 +17,17 @@ const supplierDocuments = [
 
 export default function WhyAoPage() {
   return (
-    <>
-      <section className={`${styles.intro} dark-surface`} aria-labelledby="why-ao-title">
+    <div className="brass-interior">
+      <section className={`brass-banner ${styles.intro} dark-surface`} aria-labelledby="why-ao-title">
+        <DriftNavigation />
         <div className="frame-width">
           <h1 id="why-ao-title">Why choose AO?</h1>
           <p>Bulk stationery, commercial printing and recurring supply through one procurement partner.</p>
         </div>
       </section>
 
-      <section className={`${styles.benefits} frame-width`} aria-label="Procurement benefits">
+      <section className={`${styles.benefits} frame-width`} aria-labelledby="benefits-title">
+        <h2 id="benefits-title">Procurement benefits</h2>
         <dl className={styles.benefitGrid}>
           {procurementAdvantages.map(({ title, description }) => (
             <div className={styles.benefit} key={title}>
@@ -33,6 +36,18 @@ export default function WhyAoPage() {
             </div>
           ))}
         </dl>
+      </section>
+
+      <section className={`${styles.benefits} frame-width`} aria-labelledby="process-title">
+        <h2 id="process-title">How orders work</h2>
+        <ol className={styles.processGrid}>
+          {procurementStages.map(({ title, description }) => (
+            <li className={styles.benefit} key={title}>
+              <h3>{title}</h3>
+              <p>{description}</p>
+            </li>
+          ))}
+        </ol>
       </section>
 
       <section className={`${styles.compliance} dark-surface`} aria-labelledby="compliance-title">
@@ -50,6 +65,6 @@ export default function WhyAoPage() {
           <ActionLink href="/contact#quote-form" variant="solid">Request a quote</ActionLink>
         </div>
       </section>
-    </>
+    </div>
   );
 }

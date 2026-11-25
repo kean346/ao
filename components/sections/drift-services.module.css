@@ -14,9 +14,10 @@
   height: 100vh;
   height: 100svh;
   border-radius: inherit;
-  background-image:
-    radial-gradient(ellipse at 7% 57%, #564125 0%, transparent 66%),
-    linear-gradient(115deg, #322718, #191815 86%);
+  background:
+    radial-gradient(ellipse at 7% 57%, rgb(86 65 37 / 63%), transparent 70%),
+    linear-gradient(115deg, rgb(35 27 17 / 67%), #191815 92%),
+    url('/media/smoked-brass.webp') center / cover;
 }
 
 .inner {
@@ -48,15 +49,6 @@
 
 .serviceNav, .aside .cta {
   display: none;
-}
-
-.allServices {
-  display: inline-block;
-  margin-top: 1rem;
-  color: var(--drift-gold);
-  font-size: .875rem;
-  text-decoration: underline;
-  text-underline-offset: .25em;
 }
 
 .cards {
@@ -144,8 +136,6 @@
     background: rgb(227 193 138 / 12%);
     color: var(--drift-gold);
   }
-
-  .allServices { margin-top: -.75rem; }
 
   .aside .cta {
     display: flex;

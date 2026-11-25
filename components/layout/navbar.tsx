@@ -51,7 +51,7 @@ export function Navbar() {
       key={href}
       href={href}
       aria-current={pathname === href ? 'page' : undefined}
-      data-active={pathname === href || pathname.startsWith(href + '/')}
+      data-active={pathname === href || (href === '/#services' && pathname.startsWith('/services/')) || pathname.startsWith(href + '/')}
       onClick={() => setOpenOnPage(null)}
     >
       {label}

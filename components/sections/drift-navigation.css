@@ -70,14 +70,20 @@
   pointer-events: auto;
 }
 
-.drift-dropdown a {
+.drift-dropdown a, .drift-dropdown button {
   display: block;
+  width: 100%;
   padding: 10px 12px;
   border-radius: 10px;
   font-size: .875rem;
+  text-align: left;
 }
 
-.drift-dropdown a:hover { background: #2a251e; }
+.drift-dropdown a:hover, .drift-dropdown button:hover { background: #2a251e; }
+
+@media (prefers-reduced-motion: reduce) {
+  .drift-replay { display: none; }
+}
 
 @media (max-width: 560px) {
   .drift-nav {

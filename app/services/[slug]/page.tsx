@@ -29,13 +29,13 @@ export default async function ServicePage({ params }: PageProps) {
   const quoteHref = `/contact?service=${service.slug}#quote-form`;
 
   return (
-    <div className={`ao-services-view ${styles.page}`}>
-      <section className={`${styles.banner} dark-surface`} aria-labelledby="service-title">
+    <div className={`brass-interior ${styles.page}`}>
+      <section className={`brass-banner dark-surface ${styles.banner}`} aria-labelledby="service-title">
         <DriftNavigation />
         <div className="frame-width">
-          <Link className={styles.back} href="/services">
+          <Link className={styles.back} href="/#services">
             <ArrowLeft aria-hidden="true" size={16} strokeWidth={1.5} />
-            All services
+            Back to services
           </Link>
           <div className={styles.detailIntro}>
             <div>
@@ -52,7 +52,7 @@ export default async function ServicePage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className={styles.requirements} aria-labelledby="service-overview-title">
+      <section className={`${styles.requirements} dark-surface`} aria-labelledby="service-overview-title">
         <div className="frame-width">
           <header>
             <h2 id="service-overview-title">Order requirements</h2>

@@ -3,8 +3,8 @@
   z-index: 10;
   padding: 5rem 1.5rem;
   border-radius: 25px 25px 0 0;
-  background: #e3cca6;
-  color: var(--drift-ink);
+  background: linear-gradient(135deg, rgb(18 14 9 / 42%), #241c13 83%), url('/media/smoked-brass.webp') center / cover;
+  color: #f6eade;
 }
 
 .actions {
@@ -28,25 +28,25 @@
 }
 
 .primary {
-  background: var(--drift-ink);
-  color: #fff9f2;
-}
-
-.primary:hover {
-  background: #1f1003;
-}
-
-.secondary {
-  background: #cfad78;
+  background: var(--drift-gold);
   color: var(--drift-ink);
 }
 
+.primary:hover {
+  background: var(--drift-gold-hover);
+}
+
+.secondary {
+  border: 1px solid rgb(227 193 138 / 55%);
+  color: #f6eade;
+}
+
 .secondary:hover {
-  background: #dabe91;
+  background: #443420;
 }
 
 .button:focus-visible {
-  outline: 2px solid #321c04;
+  outline: 2px solid #f6eade;
   outline-offset: 4px;
 }
 
@@ -57,8 +57,8 @@
   flex: none;
   place-items: center;
   border-radius: 50%;
-  background: #fff9f2;
-  color: #321c04;
+  background: #1b1813;
+  color: var(--drift-gold);
 }
 
 .divider {
@@ -102,7 +102,26 @@
   line-height: 1.35;
   letter-spacing: .1em;
   text-transform: uppercase;
+  color: var(--drift-gold);
 }
+
+.more {
+  display: flex;
+  max-width: 72rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: clamp(2.5rem, 5vw, 4rem) auto 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgb(227 193 138 / 35%);
+  background: rgb(19 16 12 / 52%);
+  color: #f6eade;
+}
+
+.more:hover { border-color: var(--drift-gold); }
+.more strong, .more span span { display: block; }
+.more span span { margin-top: .25rem; color: #dfcdb8; font-size: .9rem; }
+.more svg { flex: none; color: var(--drift-gold); }
 
 .statement {
   flex: 1;

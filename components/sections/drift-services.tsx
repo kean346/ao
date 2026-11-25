@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { ServiceCard } from '@/components/sections/service-card';
 import { DriftQuoteBar } from '@/components/sections/drift-quote-bar';
@@ -80,7 +79,6 @@ export function DriftServices() {
               );
             })}
           </nav>
-          <Link className={styles.allServices} href="/services">View all services</Link>
           <DriftQuoteBar className={styles.cta} />
         </aside>
 
