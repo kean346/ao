@@ -1,82 +1,69 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { QuoteCta } from '@/components/sections/quote-cta';
+import { ActionLink } from '@/components/ui/action-link';
 import { directors, siteConfig } from '@/lib/config';
+import './about.css';
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'Meet the board of AO Enterprises (Pty) Ltd, a commercial supply and procurement business based in Pretoria, Gauteng.',
+  description: 'About AO Enterprises (Pty) Ltd, a commercial supply and procurement business based in Pretoria, Gauteng.',
 };
 
 export default function AboutPage() {
   return (
-    <>
-      <section className="about-hero dark-surface section-space" aria-labelledby="about-title">
-        <div className="frame-width">
-          <header className="editorial-intro">
-            <div>
-              <p className="eyebrow">About AO Enterprises</p>
-              <h1 id="about-title">The people<br />behind the <em>supply.</em></h1>
-            </div>
-            <p>{siteConfig.legalName} is a South African commercial supply and procurement business based in Pretoria, Gauteng.</p>
-          </header>
-          <div className="about-image reveal-photo">
+    <div className="ao-about">
+      <section className="ao-about-hero dark-surface" aria-labelledby="about-title">
+        <div className="frame-width ao-about-intro">
+          <p className="eyebrow">Pretoria, Gauteng</p>
+          <h1 id="about-title">About AO Enterprises</h1>
+          <p>{siteConfig.legalName} provides commercial supply and procurement services to South African organisations.</p>
+        </div>
+      </section>
+
+      <div className="frame-width ao-about-details">
+        <section className="ao-about-overview" aria-labelledby="about-overview-title">
+          <div>
+            <h2 id="about-overview-title">What we do</h2>
+            <p>
+              We source bulk stationery, coordinate commercial printing and fulfil supply contracts.
+              For once-off orders and long-term partnerships, we work from your specifications, quantities and delivery requirements.
+            </p>
+          </div>
+          <div className="ao-about-media">
             <Image
               src="/media/paper-detail.webp"
-              alt="Close detail of textured graphite and ivory paper stock"
+              alt="Layers of ivory paper and graphite bookcloth"
               fill
-              priority
-              sizes="(min-width: 900px) 62vw, 94vw"
+              sizes="(min-width: 1200px) 540px, (min-width: 760px) 46vw, 92vw"
             />
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="section-space" aria-labelledby="company-title">
-        <div className="frame-width company-overview">
+        <section className="ao-about-purpose" aria-label="Vision and mission">
           <div>
-            <p className="eyebrow">Company overview</p>
-            <h2 id="company-title">Built around<br /><em>your brief.</em></h2>
+            <h2>Vision</h2>
+            <p>Statement forthcoming.</p>
           </div>
           <div>
-            <p className="company-description">
-              We work with businesses, schools, institutions and public-sector organisations on bulk stationery,
-              commercial printing and long-term supply requirements. Each enquiry starts with the specifications,
-              quantities and delivery needs of the organisation placing the order.
-            </p>
-            <dl className="purpose-list">
-              <div>
-                <dt>Vision</dt>
-                <dd>Vision statement to be supplied.</dd>
-              </div>
-              <div>
-                <dt>Mission</dt>
-                <dd>Mission statement to be supplied.</dd>
-              </div>
-            </dl>
+            <h2>Mission</h2>
+            <p>Statement forthcoming.</p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="directors" className="directors section-space" aria-labelledby="directors-title">
-        <div className="frame-width">
-          <header className="editorial-intro">
-            <h2 id="directors-title">Board of <em>directors.</em></h2>
-            <p>Executive portraits forthcoming.</p>
-          </header>
-          <ul className="directors-grid">
+        <section id="directors" className="ao-about-board" aria-labelledby="directors-title">
+          <h2 id="directors-title">Board of directors</h2>
+          <ul className="ao-about-directors">
             {directors.map(director => (
               <li key={director.name}>
-                <div className="portrait-placeholder" aria-hidden="true" />
                 <h3>{director.name}</h3>
                 <p>{director.role}</p>
               </li>
             ))}
           </ul>
-        </div>
-      </section>
+        </section>
 
-      <QuoteCta title="Work with AO Enterprises." />
-    </>
+        <ActionLink href="/contact#quote-form" variant="outline">Request a Quote</ActionLink>
+      </div>
+    </div>
   );
 }

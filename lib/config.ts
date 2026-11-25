@@ -61,7 +61,7 @@ export const services = [
     title: 'Long-Term Supply Contracts',
     summary: 'Recurring supply agreements, tender-related fulfilment and dedicated procurement partnerships.',
     overview:
-      'Plan recurring orders around the items, volumes and delivery points your organisation needs over time. Share a supply schedule or tender brief to start discussing scope.',
+      'We coordinate recurring orders for public institutions and private businesses, from tender specifications through to scheduled delivery. Share a supply schedule or tender brief to start discussing scope.',
     image: '/media/fulfilment.webp',
     imageAlt: 'Unbranded cartons and paper reams grouped on a pallet in a distribution space',
     capabilities: [
@@ -82,20 +82,20 @@ export type Service = (typeof services)[number];
 
 export const procurementAdvantages = [
   {
-    title: 'Competitive Bulk Pricing',
-    description: 'Compare itemised quotations based on quantities, specifications and order frequency.',
+    title: 'Competitive bulk pricing',
+    description: 'Get an itemised quote for your quantities and order frequency.',
   },
   {
-    title: 'Procurement & Delivery Coordination',
-    description: 'Bring product sourcing, order timing and delivery requirements into the same conversation.',
+    title: 'Coordinated delivery',
+    description: 'Agree on lead times and delivery points when you place your order.',
   },
   {
-    title: 'Compliance Documentation',
-    description: 'Flag any vendor onboarding or tender documents when you brief us so we can confirm what applies.',
+    title: 'Compliance documentation',
+    description: 'Specify the supplier records your tender or onboarding process requires.',
   },
   {
-    title: 'Dedicated Account Management',
-    description: 'Keep specifications, updates and repeat supply enquiries with a consistent point of contact.',
+    title: 'Dedicated account management',
+    description: 'Work with one contact for order updates and repeat purchases.',
   },
 ];
 

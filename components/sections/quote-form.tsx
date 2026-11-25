@@ -5,20 +5,10 @@ import type { FormEvent, ReactNode } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { services } from '@/lib/config';
 
-const requiredFields = {
-  fullName: 'Enter your full name.',
-  organisation: 'Enter your company or institution.',
-  email: 'Enter your email address.',
-  phone: 'Enter a phone number.',
-  service: 'Choose a service.',
-  specifications: 'Describe the products or printing you need.',
-  quantities: 'Enter an estimated quantity.',
-  destination: 'Enter the delivery destination.',
-  requiredDate: 'Choose a required date.',
-};
+import { documentError, quoteErrors, requiredFields, textLimits, todayInPretoria } from '@/lib/quote';
+import type { Errors, FieldName } from '@/lib/quote';
+import { submitQuote } from '@/app/contact/submit-quote';
 
-type FieldName = keyof typeof requiredFields | 'document' | 'notes';
-type Errors = Partial<Record<FieldName, string>>;
 type ControlProps = {
   id: FieldName;
   name: FieldName;
@@ -26,36 +16,6 @@ type ControlProps = {
   'aria-invalid'?: true;
   'aria-describedby'?: string;
 };
-
-const fileTypes: Record<string, string> = {
-  pdf: 'application/pdf',
-  docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-};
-
-const dateFormatter = new Intl.DateTimeFormat('en-ZA', {
-  timeZone: 'Africa/Johannesburg',
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-});
-
-function todayInPretoria() {
-  const parts = dateFormatter.formatToParts(new Date());
-  return ['year', 'month', 'day'].map(part => parts.find(entry => entry.type === part)?.value).join('-');
-}
-
-function documentError(file: File | null | undefined) {
-  if (!file?.name) return;
-  const extension = file.name.split('.').pop()?.toLowerCase();
-  const expectedType = extension && fileTypes[extension];
-
-  if (!expectedType || (file.type && file.type !== 'application/octet-stream' && file.type !== expectedType)) {
-    return 'Choose a PDF, DOCX or XLSX document.';
-  }
-  if (file.size === 0) return 'Choose a document with content.';
-  if (file.size > 10 * 1024 * 1024) return 'Choose a document of 10 MB or less.';
-}
 
 function Field({
   name,
@@ -95,51 +55,55 @@ function Field({
   );
 }
 
-export function QuoteForm({ selectedService }: { selectedService: string }) {
+export function QuoteForm({ selectedService, deliveryEnabled }: { selectedService: string; deliveryEnabled: boolean }) {
   const [earliestDate, setEarliestDate] = useState('');
   const [errors, setErrors] = useState<Errors>({});
-  const [feedback, setFeedback] = useState<'invalid' | 'valid' | null>(null);
+  const [feedback, setFeedback] = useState<'invalid' | 'valid' | 'sent' | 'failed' | null>(null);
+  const busy = useRef(false);
+  const [sending, setSending] = useState(false);
   const confirmation = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => { setEarliestDate(todayInPretoria()); }, []);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (busy.current || feedback === 'sent') return;
     const form = event.currentTarget;
     const data = new FormData(form);
-    const value = (name: FieldName) => String(data.get(name) ?? '').trim();
-    const validation: Errors = {};
+    const validation = quoteErrors(data);
 
-    for (const name of Object.keys(requiredFields) as (keyof typeof requiredFields)[]) {
-      if (!value(name)) validation[name] = requiredFields[name];
+    function highlight(errors: Errors) {
+      setErrors(errors);
+      setFeedback('invalid');
+      requestAnimationFrame(() => form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus());
     }
-    const email = form.elements.namedItem('email') as HTMLInputElement;
-    if (value('email') && email.validity.typeMismatch) {
-      validation.email = 'Enter a valid email address.';
-    }
-    const phone = value('phone');
-    const digits = phone.replace(/\D/g, '').length;
-    if (phone && (!/^[+0-9() .-]+$/.test(phone) || digits < 7 || digits > 15)) {
-      validation.phone = 'Enter a valid phone number with 7 to 15 digits.';
-    }
-    if (value('service') && !services.some(service => service.slug === value('service'))) {
-      validation.service = requiredFields.service;
-    }
-    if (value('requiredDate') && value('requiredDate') < todayInPretoria()) {
-      validation.requiredDate = 'Choose today or a future date.';
-    }
-    const document = data.get('document');
-    const error = documentError(document instanceof File ? document : null);
-    if (error) validation.document = error;
 
-    const hasErrors = Object.keys(validation).length > 0;
-    setErrors(validation);
-    setFeedback(hasErrors ? 'invalid' : 'valid');
+    if (Object.keys(validation).length) {
+      highlight(validation);
+      return;
+    }
 
-    requestAnimationFrame(() => {
-      if (hasErrors) form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
-      else confirmation.current?.focus();
-    });
+    setErrors({});
+    if (deliveryEnabled) {
+      busy.current = true;
+      setSending(true);
+      try {
+        const result = await submitQuote(data);
+        if (result.status === 'invalid') {
+          highlight(result.errors);
+          return;
+        }
+        setFeedback(result.status);
+      } catch {
+        setFeedback('failed');
+      } finally {
+        busy.current = false;
+        setSending(false);
+      }
+    } else {
+      setFeedback('valid');
+    }
+    requestAnimationFrame(() => confirmation.current?.focus());
   }
 
   return (
@@ -160,27 +124,27 @@ export function QuoteForm({ selectedService }: { selectedService: string }) {
         setFeedback(null);
       }}
     >
-      <p className="form-notice"><strong>Demo form</strong> · Checks your details locally in this browser.</p>
+      {!deliveryEnabled && <p className="form-notice">Quote delivery is awaiting setup. You can check your request here before sending enquiries opens.</p>}
 
-      <fieldset>
+      <fieldset disabled={sending}>
         <legend>Your details</legend>
         <div className="form-grid">
           <Field name="fullName" label="Full name" errors={errors}>
-            {props => <input {...props} autoComplete="name" maxLength={120} />}
+            {props => <input {...props} autoComplete="name" maxLength={textLimits.fullName} />}
           </Field>
           <Field name="organisation" label="Company or institution" errors={errors}>
-            {props => <input {...props} autoComplete="organization" maxLength={160} />}
+            {props => <input {...props} autoComplete="organization" maxLength={textLimits.organisation} />}
           </Field>
           <Field name="email" label="Email" errors={errors}>
-            {props => <input {...props} type="email" autoComplete="email" maxLength={254} />}
+            {props => <input {...props} type="email" autoComplete="email" maxLength={textLimits.email} />}
           </Field>
           <Field name="phone" label="Phone" errors={errors}>
-            {props => <input {...props} type="tel" autoComplete="tel" maxLength={30} />}
+            {props => <input {...props} type="tel" autoComplete="tel" maxLength={textLimits.phone} />}
           </Field>
         </div>
       </fieldset>
 
-      <fieldset>
+      <fieldset disabled={sending}>
         <legend>Supply requirements</legend>
         <div className="form-grid">
           <Field name="service" label="Service required" errors={errors}>
@@ -192,13 +156,13 @@ export function QuoteForm({ selectedService }: { selectedService: string }) {
             )}
           </Field>
           <Field name="quantities" label="Estimated quantities" errors={errors}>
-            {props => <input {...props} placeholder="e.g. 250 reams of A4 paper" maxLength={180} />}
+            {props => <input {...props} placeholder="e.g. 250 reams of A4 paper" maxLength={textLimits.quantities} />}
           </Field>
           <Field name="specifications" label="Product specifications" errors={errors} wide>
-            {props => <textarea {...props} rows={4} maxLength={2400} placeholder="Include sizes, materials, finishes or a list of items." />}
+            {props => <textarea {...props} rows={4} maxLength={textLimits.specifications} placeholder="Include sizes, materials, finishes or a list of items." />}
           </Field>
           <Field name="destination" label="Delivery destination" errors={errors}>
-            {props => <input {...props} placeholder="City or suburb and postal code" maxLength={200} />}
+            {props => <input {...props} placeholder="City or suburb and postal code" maxLength={textLimits.destination} />}
           </Field>
           <Field name="requiredDate" label="Required date" errors={errors}>
             {props => <input {...props} type="date" min={earliestDate || undefined} />}
@@ -207,18 +171,20 @@ export function QuoteForm({ selectedService }: { selectedService: string }) {
             {props => <input {...props} type="file" accept=".pdf,.docx,.xlsx" />}
           </Field>
           <Field name="notes" label="Additional notes" errors={errors} wide>
-            {props => <textarea {...props} rows={3} maxLength={2000} />}
+            {props => <textarea {...props} rows={3} maxLength={textLimits.notes} />}
           </Field>
         </div>
       </fieldset>
 
       <div className="form-actions">
-        <button type="submit" className="action-link action-solid" disabled={!earliestDate}>
-          Check quote request
+        <button type="submit" className="action-link action-solid" disabled={!earliestDate || sending || feedback === 'sent'}>
+          {sending ? 'Sending…' : deliveryEnabled ? 'Send quote request' : 'Check quote request'}
           <ArrowUpRight aria-hidden="true" size={17} strokeWidth={1.6} />
         </button>
         <p ref={confirmation} tabIndex={-1} role="status" className="form-feedback" data-feedback={feedback}>
-          {feedback === 'valid' && 'Demo check complete. Your details and files stayed in this browser.'}
+          {feedback === 'valid' && 'Your request is ready. Delivery is pending and your details are still in this browser.'}
+          {feedback === 'sent' && 'Your quote request has been sent to AO Enterprises.'}
+          {feedback === 'failed' && 'Delivery could not be confirmed. Your details are still here.'}
           {feedback === 'invalid' && 'Check the highlighted fields and try again.'}
         </p>
       </div>

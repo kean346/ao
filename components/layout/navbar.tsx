@@ -66,9 +66,9 @@ export function Navbar() {
   );
 
   return (
-    <header className="site-header dark-surface" data-scrolled={scrolled}>
+    <header className="site-header dark-surface" data-scrolled={scrolled} data-home={pathname === '/'} data-open={menuOpen}>
       <div className="frame-width header-inner">
-        <Brand priority />
+        <Brand />
         <nav className="desktop-nav" aria-label="Main">
           {links}
         </nav>

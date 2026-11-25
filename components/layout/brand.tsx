@@ -1,11 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-export function Brand({ priority = false }: { priority?: boolean }) {
+export function Brand() {
   return (
     <Link href="/" className="brand" aria-label="AO Enterprises home">
-      <Image src="/media/ao-mark.webp" alt="" width={42} height={42} priority={priority} />
-      <span className="brand-type">{'AO '}<span>Enterprises</span></span>
+      <Image className="brand-logo" src="/media/ao-logo.webp" alt="" width={520} height={468} unoptimized />
     </Link>
   );
 }
