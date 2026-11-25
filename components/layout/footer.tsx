@@ -13,7 +13,7 @@ export function Footer() {
           </div>
           <nav aria-label="Footer">
             {siteConfig.navigation.map(({ href, label }) => <Link key={href} href={href}>{label}</Link>)}
-            <Link href="/contact#quote-form">Request a quote</Link>
+            <Link href="/#quote-form">Request a quote</Link>
           </nav>
           <p className="footer-location">{siteConfig.location}</p>
         </div>

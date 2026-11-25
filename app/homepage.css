@@ -17,6 +17,7 @@ body:has(.drift-landing) .site-footer {
 }
 
 .drift-landing {
+  --catalogue-background: #28251f;
   --drift-gold: #e3c18a;
   --drift-gold-hover: #f1d5a6;
   --drift-ink: #211910;
@@ -30,7 +31,6 @@ body:has(.drift-landing) .site-footer {
   isolation: isolate;
   min-height: max(32rem, 100vh);
   min-height: max(32rem, 100svh);
-  margin-bottom: -25px;
   overflow: hidden;
   background: #483625;
   color: #fff;
@@ -50,7 +50,12 @@ body:has(.drift-landing) .site-footer {
 
 .brass-hero-shade {
   z-index: -2;
-  background: linear-gradient(rgb(18 11 4 / 27%), rgb(18 11 4 / 44%));
+  background: linear-gradient(
+    rgb(18 11 4 / 27%) 0%,
+    rgb(18 11 4 / 34%) 56%,
+    rgb(36 31 23 / 81%) 84%,
+    var(--catalogue-background) 100%
+  );
 }
 
 .brass-hero-star {
@@ -130,6 +135,8 @@ body:has(.drift-landing) .site-footer {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  html:has(.drift-landing) { scroll-behavior: smooth; }
+
   .brass-hero[data-entrance='reset'] *,
   .brass-hero[data-entrance='reset']::after { animation-name: none !important; }
 
@@ -169,6 +176,23 @@ body:has(.drift-landing) .site-footer {
     clip-path: none !important;
   }
 }
+
+.ao-disclosure > summary {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: .7rem;
+  color: inherit;
+  font-weight: 550;
+  list-style: none;
+  cursor: pointer;
+}
+
+.ao-disclosure > summary::-webkit-details-marker { display: none; }
+.ao-disclosure > summary svg { flex: none; }
+.ao-disclosure[open] > summary svg { transform: rotate(45deg); }
 
 @keyframes brass-draw {
   0% { stroke-dasharray: 0 100; stroke-dashoffset: -50; stroke-opacity: 0; }

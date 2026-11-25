@@ -13,7 +13,7 @@ npm run dev
 
 The development server uses port 3000 by default. Run `npm run lint` and `npm run build` to validate the project.
 
-The home, services, service details, about and quote pages use shared content from `lib/config.ts`. The homepage opens with the Smoked Brass design, a folded-cardstock star and animated rings. The homepage contains the services catalogue, with dedicated detail pages. Why choose AO? contains procurement benefits, the order process and supplier documentation. The hero and service reveals respect reduced-motion preferences.
+The home, services, service details, about and quote pages use shared content from `lib/config.ts`. The homepage opens with the Smoked Brass design, a folded-cardstock star and animated rings. The homepage contains service details, ordering and supplier information, About AO and the quote form. Legacy page URLs redirect to their relevant homepage sections. The hero and service reveals respect reduced-motion preferences.
 
 The header and footer use the stacked gold artwork in `public/media/ao-logo.webp`, recreated from the supplied AO logo references.
 

@@ -5,17 +5,15 @@ import Link from 'next/link';
 import './drift-navigation.css';
 
 export function DriftNavigation({
-  onHome = false,
   onReplay,
 }: {
-  onHome?: boolean;
   onReplay?: () => void;
 }) {
   const links = [
-    { href: onHome ? '#services' : '/#services', label: 'Services' },
-    { href: onHome ? '#about' : '/about', label: 'About AO' },
-    { href: '/why-ao', label: 'Why choose AO?' },
-    { href: '/contact#quote-form', label: 'Request a quote' },
+    { href: '#services', label: 'Services' },
+    { href: '#about', label: 'About AO' },
+    { href: '#procurement', label: 'Buying process' },
+    { href: '#quote-form', label: 'Request a quote' },
   ];
   const [open, setOpen] = useState(false);
   const nav = useRef<HTMLElement>(null);
@@ -62,7 +60,7 @@ export function DriftNavigation({
       </div>
       <ul id="drift-menu" className="drift-dropdown" inert={!open}>
         {links.map(({ href, label }) => (
-          <li key={href}><Link href={href} onClick={() => setOpen(false)}>{label}</Link></li>
+          <li key={href}><a href={href} onClick={() => setOpen(false)}>{label}</a></li>
         ))}
         {onReplay && (
           <li className="drift-replay">

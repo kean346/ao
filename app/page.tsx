@@ -1,4 +1,4 @@
-import { DriftAbout } from '@/components/sections/drift-about';
+import { OrderSection } from '@/components/sections/order-section';
 import { DriftServices } from '@/components/sections/drift-services';
 import { Hero } from '@/components/sections/hero';
 import './homepage.css';
@@ -8,7 +8,7 @@ export default function HomePage() {
     <div className="drift-landing">
       <Hero />
       <DriftServices />
-      <DriftAbout />
+      <OrderSection />
     </div>
   );
 }

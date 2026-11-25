@@ -59,7 +59,7 @@ export function Navbar() {
   ));
 
   const quoteLink = (
-    <Link className="nav-quote" href="/contact#quote-form" onClick={() => setOpenOnPage(null)}>
+    <Link className="nav-quote" href="/#quote-form" onClick={() => setOpenOnPage(null)}>
       Request a quote
       <ArrowUpRight aria-hidden="true" size={16} strokeWidth={1.6} />
     </Link>

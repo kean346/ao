@@ -137,22 +137,6 @@ main:focus {
   transition: background-color 200ms ease;
 }
 
-body:has(.brass-interior) .site-header {
-  display: none;
-}
-
-.brass-interior {
-  background: #201b15;
-  color: #f6ede0;
-  font-family: 'Inter Variable', Arial, sans-serif;
-}
-
-.brass-interior .brass-banner {
-  position: relative;
-  padding-top: clamp(106px, 10vw, 140px);
-  background: linear-gradient(rgb(23 18 12 / 47%), #201b15), url('/media/smoked-brass.webp') center / cover;
-}
-
 .site-header[data-home='true'] {
   position: fixed;
   inset: 0 0 auto;

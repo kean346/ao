@@ -55,7 +55,8 @@ function Field({
   );
 }
 
-export function QuoteForm({ selectedService, deliveryEnabled }: { selectedService: string; deliveryEnabled: boolean }) {
+export function QuoteForm({ deliveryEnabled }: { deliveryEnabled: boolean }) {
+  const [selectedService, setSelectedService] = useState('');
   const [earliestDate, setEarliestDate] = useState('');
   const [errors, setErrors] = useState<Errors>({});
   const [feedback, setFeedback] = useState<'invalid' | 'valid' | 'sent' | 'failed' | null>(null);
@@ -64,6 +65,20 @@ export function QuoteForm({ selectedService, deliveryEnabled }: { selectedServic
   const confirmation = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => { setEarliestDate(todayInPretoria()); }, []);
+
+  useEffect(() => {
+    function prefillService() {
+      const slug = services.find(service => window.location.hash === `#quote-${service.slug}`)?.slug;
+      if (slug) {
+        setSelectedService(slug);
+        setErrors(current => ({ ...current, service: undefined }));
+      }
+    }
+
+    prefillService();
+    window.addEventListener('hashchange', prefillService);
+    return () => window.removeEventListener('hashchange', prefillService);
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -108,7 +123,6 @@ export function QuoteForm({ selectedService, deliveryEnabled }: { selectedServic
 
   return (
     <form
-      id="quote-form"
       className="quote-form"
       noValidate
       onSubmit={handleSubmit}
@@ -149,7 +163,7 @@ export function QuoteForm({ selectedService, deliveryEnabled }: { selectedServic
         <div className="form-grid">
           <Field name="service" label="Service required" errors={errors}>
             {props => (
-              <select {...props} defaultValue={selectedService}>
+              <select {...props} value={selectedService} onChange={event => setSelectedService(event.target.value)}>
                 <option value="" disabled>Choose a service</option>
                 {services.map(service => <option key={service.slug} value={service.slug}>{service.title}</option>)}
               </select>

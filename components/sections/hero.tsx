@@ -3,7 +3,6 @@
 import type { CSSProperties } from 'react';
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { DriftNavigation } from '@/components/sections/drift-navigation';
 import { BrassRings } from '@/components/sections/brass-rings';
 
@@ -78,7 +77,7 @@ export function Hero() {
           </span>
         ))}
       </h1>
-      <DriftNavigation onHome onReplay={playEntrance} />
+      <DriftNavigation onReplay={playEntrance} />
       {cornerCopy.map(({ position, lines, delay }) => (
         <p className={`brass-hero-copy brass-hero-${position}`} key={position}>
           {lines.map((line, index) => (
@@ -89,8 +88,8 @@ export function Hero() {
         </p>
       ))}
       <div className="brass-hero-actions">
-        <Link href="/contact#quote-form">Request a quote</Link>
-        <Link href="#services">View services</Link>
+        <a href="#quote-form">Request a quote</a>
+        <a href="#services">View services</a>
       </div>
     </section>
   );
