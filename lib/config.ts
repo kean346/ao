@@ -8,6 +8,7 @@ export const siteConfig = {
   navigation: [
     { label: 'Services', href: '/services' },
     { label: 'About', href: '/about' },
+    { label: 'Why choose AO?', href: '/why-ao' },
     { label: 'Contact', href: '/contact' },
   ],
 };

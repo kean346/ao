@@ -13,7 +13,7 @@ npm run dev
 
 The development server uses port 3000 by default. Run `npm run lint` and `npm run build` to validate the project.
 
-The home, services, service details, about and quote pages use shared content from `lib/config.ts`. The fonts and media are served locally. The Grayscale-inspired homepage plays an original six-second 3D animation of printed sheets passing through a press. The desktop file is rendered at 3840 × 2160, with a smaller mobile encode. Visitors who prefer reduced motion see a still from the same scene.
+The home, services, service details, about and quote pages use shared content from `lib/config.ts`. The homepage follows the supplied Drift landing-page brief. It uses AO’s looping print-press video and original imagery for the three services. Visitors who prefer reduced motion see a still from the same video.
 
 The header and footer use the stacked gold artwork in `public/media/ao-logo.webp`, recreated from the supplied AO logo references.
 

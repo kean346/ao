@@ -1,23 +1,21 @@
-import Link from 'next/link';
-import { ArrowDown, ArrowUpRight } from 'lucide-react';
+import { DriftNavigation } from '@/components/sections/drift-navigation';
+import { DriftQuoteBar } from '@/components/sections/drift-quote-bar';
 import { HeroFilm } from '@/components/sections/hero-film';
 
 export function Hero() {
   return (
-    <section className="masthead dark-surface" aria-labelledby="home-title">
+    <section className="drift-hero" aria-labelledby="home-title">
       <HeroFilm />
-      <div className="frame-width masthead-inner">
-        <div className="masthead-copy">
-          <p className="eyebrow">Commercial supply &amp; procurement</p>
-          <h1 id="home-title">Reliable<br />bulk supply.</h1>
-          <p className="masthead-summary">Bulk stationery, commercial printing and contract fulfilment for South African businesses and institutions.</p>
-          <Link className="masthead-quote" href="/contact#quote-form">
-            Request a quote <ArrowUpRight size={17} aria-hidden="true" />
-          </Link>
-        </div>
-        <a className="masthead-explore" href="#services">
-          Explore our services <ArrowDown size={17} strokeWidth={1.4} aria-hidden="true" />
-        </a>
+      <DriftNavigation />
+      <div className="drift-hero-content">
+        <h1 id="home-title">
+          <span>Bulk supply</span>
+          <span>without <em>the hassle</em></span>
+        </h1>
+        <p className="drift-hero-summary">
+          Bulk stationery, commercial printing and contract fulfilment for South African businesses and institutions.
+        </p>
+        <DriftQuoteBar />
       </div>
     </section>
   );
